@@ -43,7 +43,7 @@ class Dom extends Model
         if (empty($this->full)) {
             $this->buildFullList();
         }
-//        dd($this->full);
+        
         for ($j=0;$j<count($this->full);$j++) {
             $duplications = [];
             for ($i=0;$i<count($this->full);$i++) {
