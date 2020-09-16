@@ -13,6 +13,7 @@ class Dom extends Model
     private $dom;
     private $full = [];
     private $distinct = [];
+    private $for_response = [];
     
     public function __construct($str) {
         $this->dom = HtmlDomParser::str_get_html($str);
@@ -37,11 +38,16 @@ class Dom extends Model
                 }               
             }
         }
+        
     }
     
     public function buildDistinctList() {
         if (empty($this->full)) {
             $this->buildFullList();
+        }
+        
+        if (empty($this->full)) {
+            return false;
         }
         
         for ($j=0;$j<count($this->full);$j++) {
@@ -51,19 +57,30 @@ class Dom extends Model
                     $duplications[] = $this->full[$j]['grade'];
                 }
             }
-            $this->distinct[$this->full[$j]['name'] . ' | ' . $this->full[$j]['type']] = max($duplications);
+            
+            $grade_end = round(array_sum($duplications)/count($duplications),0);
+            $this->distinct[$this->full[$j]['name'] . ' | ' . $this->full[$j]['type']] = $grade_end;
+            $this->for_response[$this->full[$j]['name'] . ' | ' . $this->full[$j]['type']] = [
+                'name' => $this->full[$j]['name'],
+                'type' => $this->full[$j]['type'],
+                'grade' => [
+                    'all' => trim(implode(' | ', $duplications)), 
+                    'end' => $grade_end
+                    ],
+            ];
         }
+        return true;
     }
     
-    public function printMedian() {
-        $full = $this->calcMedianFull();
-        $distinct = $this->calcMedianDistinct();
-        
-        echo "<p>Средний балл зачётки: $full";
-        echo "<p>Средний балл диплома: $distinct";
-    }
+//    public function printMedian() {
+//        $full = $this->calcMedianFull();
+//        $distinct = $this->calcMedianDistinct();
+//        
+//        echo "<p>Средний балл зачётки: $full";
+//        echo "<p>Средний балл диплома: $distinct";
+//    }
     
-    private function calcMedianFull() {
+    public function getMedianFull() {
         $sum = 0;
         foreach ($this->full as $value) {
             $sum += $value['grade'];
@@ -71,7 +88,7 @@ class Dom extends Model
         return round($sum/count($this->full), 2);
     }
     
-    private function calcMedianDistinct() {
+    public function getMedianDistinct() {
         $sum = 0;
         foreach ($this->distinct as $value) {
             $sum += $value;
@@ -85,5 +102,9 @@ class Dom extends Model
     
     public function getDistinct() {
         return $this->distinct;
+    }
+    
+    public function getTotal() {
+        return $this->for_response;
     }
 }

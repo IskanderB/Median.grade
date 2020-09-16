@@ -1,0 +1,13 @@
+body {
+  background-color: #D6EAFF;
+}
+
+center h3,
+center div {
+  width: 90%;
+}
+
+li {
+  list-style-type: none;
+}
+

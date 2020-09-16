@@ -6,6 +6,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
 
 @import 'custom/css/style.css';
+@import 'table/css/main.css';
+@import 'table/css/util.css';
+@import 'anim/style.css';
 
 
 input {
@@ -13,6 +16,7 @@ input {
 }
 
 .result_wrap{
+    display: none;
     color: black;
     justify-content: center;
     padding-bottom: 30px;
@@ -21,7 +25,7 @@ input {
         margin: auto;
         float: none;
         width: 80%;
-        background-color: #C4C4C4;
+        background-color: #E5E5E5;
         border-radius: 40px;
         margin-bottom: 10px;
         min-height: 40px;
@@ -30,7 +34,15 @@ input {
             width: 90%;
             margin: auto;
             float: none;
-            padding-top: 5px;
+            padding-top: 6px;
+            @media (max-width: 365px){
+                text-align: center;
+            }
+        }
+    }
+    .diplom_box{
+        .result_bits_inner{
+            padding-top: 7px;
         }
     }
     .full_result_box{
@@ -67,3 +79,41 @@ input {
     }
 }
 
+.end_grade{
+      font-weight: 800;
+  }
+  
+  .container-table100::-webkit-scrollbar { width: 10px;}
+//.chat_box::-webkit-scrollbar-button {  background-color: #666; }
+.container-table100::-webkit-scrollbar-track {  background-color: white;}
+// ::-webkit-scrollbar-track-piece { background-color: #ffffff;}
+.container-table100::-webkit-scrollbar-thumb { height: 50px; background-color: #989A99; border-radius: 5px;}
+// ::-webkit-scrollbar-corner { background-color: #999;}
+// ::-webkit-resizer { background-color: #666;}
+
+.animation_cust{
+    display: none;
+    margin-top: 20px;
+}
+
+.error_wrap{
+    display: none;
+    justify-content: center;
+    padding-bottom: 20px;
+    .error_box{
+        min-height: 40px;
+        width: 80%;
+        margin: auto;
+        float: none;
+        border-radius: 20px;
+        background-color: #FE2E23;
+        
+        .error{
+            margin-left: 15px;
+            width: 90%;
+            display: inline-block;
+            margin-top: 7px;
+        }
+    }
+    
+}

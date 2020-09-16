@@ -1962,16 +1962,78 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      rulesName: "",
+      errorMessage: "",
+      erroeView: "none",
+      animView: "none",
+      maxHeight: 0,
+      colorDip: "",
+      openResult: "none",
+      errorColor: "",
       fullResultDis: "none",
       formDis: "block",
-      resPaddingTop: "0px"
+      resPaddingTop: "0px",
+      first_name: "",
+      last_name: "",
+      otc: "",
+      n_zach: "",
+      learn_type: "bak_spec",
+      check_rules: "",
+      medianZach: "",
+      medianDip: "",
+      subjectsList: []
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    this.rulesName = "/rules";
+    this.maxHeight = String(document.documentElement.clientHeight * 0.65) + "px";
   },
   methods: {
     changeWindow: function changeWindow() {
@@ -1985,6 +2047,62 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.resPaddingTop = "0px";
       }
+    },
+    getStudent: function getStudent() {
+      var _this = this;
+
+      this.animView = "block";
+
+      if (!this.check_rules) {
+        this.errorColor = "red";
+        return false;
+      }
+
+      this.errorColor = "";
+      axios({
+        method: 'post',
+        url: 'http://median.grades.ru/api/v1/student',
+        params: {
+          'first_name': this.first_name,
+          'last_name': this.last_name,
+          'otc': this.otc,
+          'n_zach': this.n_zach,
+          'learn_type': this.learn_type
+        }
+      }).then(function (response) {
+        _this.erroeView = "none";
+
+        if (Number(response.data.dip) >= 4.75) {
+          _this.colorDip = "red";
+        } else {
+          _this.colorDip = "blue";
+        }
+
+        _this.openResult = "block";
+        _this.medianZach = response.data.zach;
+        _this.medianDip = response.data.dip;
+        _this.subjectsList = response.data.total;
+        _this.animView = "none";
+      })["catch"](function (error) {
+        _this.openResult = "none";
+        _this.animView = "none";
+        _this.errorMessage = _this.pullMessage(error.response.data.data);
+        _this.erroeView = "block";
+        console.log(_this.pullMessage(error.response.data.data));
+      });
+    },
+    pullMessage: function pullMessage(obj) {
+      var allowNames = ['last_name', 'first_name', 'otc', 'n_zach', 'learn_type', 'notFound'];
+      var message;
+      allowNames.forEach(function (element) {
+        try {
+          if (obj[element]) {
+            message = obj[element][0];
+            return true;
+          }
+        } catch (e) {}
+      });
+      return message;
     }
   }
 });
@@ -37622,7 +37740,7 @@ var render = function() {
     ),
     _vm._v(" "),
     _c(
-      "form",
+      "div",
       {
         staticClass: "appointment-form",
         style: { display: _vm.formDis },
@@ -37631,21 +37749,281 @@ var render = function() {
       [
         _c("h2", [_vm._v("расчёт среднего балла")]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "form-group-1" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.last_name,
+                expression: "last_name"
+              }
+            ],
+            attrs: {
+              maxlength: "255",
+              type: "text",
+              name: "last_name",
+              id: "name",
+              placeholder: "Фамилия",
+              required: ""
+            },
+            domProps: { value: _vm.last_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.last_name = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.first_name,
+                expression: "first_name"
+              }
+            ],
+            attrs: {
+              maxlength: "255",
+              type: "text",
+              name: "first_name",
+              id: "title",
+              placeholder: "Имя",
+              required: ""
+            },
+            domProps: { value: _vm.first_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.first_name = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.otc,
+                expression: "otc"
+              }
+            ],
+            attrs: {
+              maxlength: "255",
+              type: "text",
+              name: "otc",
+              id: "email",
+              placeholder: "Отчество",
+              required: ""
+            },
+            domProps: { value: _vm.otc },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.otc = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.n_zach,
+                expression: "n_zach"
+              }
+            ],
+            attrs: {
+              maxlength: "255",
+              type: "text",
+              name: "n_zach",
+              id: "phone_number",
+              placeholder: "Номер студенческого билета",
+              required: ""
+            },
+            domProps: { value: _vm.n_zach },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.n_zach = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "select-list" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.learn_type,
+                    expression: "learn_type"
+                  }
+                ],
+                attrs: { name: "learn_type", id: "course_type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.learn_type = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { slected: "", value: "bak_spec" } }, [
+                  _vm._v("Бакалавриат/специалитет")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "mag" } }, [
+                  _vm._v("Магистратура")
+                ])
+              ]
+            )
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "form-check" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.check_rules,
+                expression: "check_rules"
+              }
+            ],
+            staticClass: "agree-term",
+            attrs: {
+              type: "checkbox",
+              name: "agree-term",
+              id: "agree-term",
+              required: ""
+            },
+            domProps: {
+              checked: Array.isArray(_vm.check_rules)
+                ? _vm._i(_vm.check_rules, null) > -1
+                : _vm.check_rules
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.check_rules,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 && (_vm.check_rules = $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      (_vm.check_rules = $$a
+                        .slice(0, $$i)
+                        .concat($$a.slice($$i + 1)))
+                  }
+                } else {
+                  _vm.check_rules = $$c
+                }
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "label-agree-term",
+              style: { color: _vm.errorColor },
+              attrs: { for: "agree-term" }
+            },
+            [
+              _vm._m(0),
+              _vm._v("Я согласен на обработку "),
+              _c(
+                "a",
+                {
+                  staticClass: "term-service",
+                  style: { color: _vm.errorColor },
+                  attrs: { href: "" + _vm.rulesName }
+                },
+                [_vm._v("Персональных данных")]
+              )
+            ]
+          )
+        ]),
         _vm._v(" "),
-        _vm._m(2)
+        _c("div", { staticClass: "form-submit" }, [
+          _c(
+            "div",
+            {
+              staticClass: "submit",
+              attrs: { name: "submit", id: "submit" },
+              on: { click: _vm.getStudent }
+            },
+            [_vm._v("Рассчитать")]
+          )
+        ]),
+        _vm._v(" "),
+        _vm._m(1)
       ]
     ),
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "result_wrap", style: { paddingTop: _vm.resPaddingTop } },
+      {
+        staticClass: "result_wrap",
+        style: { paddingTop: _vm.resPaddingTop, display: _vm.openResult }
+      },
       [
-        _vm._m(3),
+        _c("div", { staticClass: "zach_box result_bits" }, [
+          _c("div", { staticClass: "result_bits_inner" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("span", [_vm._v("Средний балл ")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("зачётки: ")]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.medianZach))])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(4),
+        _c("div", { staticClass: "diplom_box result_bits" }, [
+          _c("div", { staticClass: "result_bits_inner" }, [
+            _c("span", [
+              _c("i", {
+                staticClass: "fa fa-graduation-cap",
+                style: { color: _vm.colorDip },
+                attrs: { "aria-hidden": "true" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("span", [_vm._v("Средний балл ")]),
+            _vm._v(" "),
+            _c("span", [_vm._v("диплома: ")]),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(_vm.medianDip))])
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -37664,10 +38042,77 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", {
-      staticClass: "grades_table_wrap",
-      style: { display: _vm.fullResultDis }
-    })
+    _c(
+      "div",
+      { staticClass: "error_wrap", style: { display: _vm.erroeView } },
+      [
+        _c("div", { staticClass: "error_box" }, [
+          _c("div", { staticClass: "error" }, [
+            _vm._v(
+              "\n                " + _vm._s(_vm.errorMessage) + "\n            "
+            )
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "grades_table_wrap",
+        style: { display: _vm.fullResultDis }
+      },
+      [
+        _c("div", { staticClass: "limiter" }, [
+          _c(
+            "div",
+            {
+              staticClass: "container-table100",
+              style: { maxHeight: _vm.maxHeight }
+            },
+            [
+              _c("div", { staticClass: "wrap-table100" }, [
+                _c("div", { staticClass: "table100" }, [
+                  _c("table", [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.subjectsList, function(iter) {
+                        return _c("tr", [
+                          _c("td", { staticClass: "column1" }, [
+                            _vm._v(_vm._s(iter.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "column2" }, [
+                            _vm._v(_vm._s(iter.type))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "column3" }, [
+                            iter.grade.all.length > 1
+                              ? _c("span", [
+                                  _c("span", [_vm._v(_vm._s(iter.grade.all))]),
+                                  _vm._v(" "),
+                                  _c("span", [_vm._v(" => ")])
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "end_grade" }, [
+                              _vm._v(_vm._s(iter.grade.end))
+                            ])
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ])
+                ])
+              ])
+            ]
+          )
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -37675,55 +38120,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group-1" }, [
-      _c("input", {
-        attrs: {
-          type: "text",
-          name: "first_name",
-          id: "title",
-          placeholder: "Имя",
-          required: ""
-        }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "text",
-          name: "last_name",
-          id: "name",
-          placeholder: "Фамилия",
-          required: ""
-        }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "email",
-          name: "otc",
-          id: "email",
-          placeholder: "Отчество",
-          required: ""
-        }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: {
-          type: "number",
-          name: "n_zach",
-          id: "phone_number",
-          placeholder: "Номер студенческого билета",
-          required: ""
-        }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "select-list" }, [
-        _c("select", { attrs: { name: "learn_type", id: "course_type" } }, [
-          _c("option", { attrs: { slected: "", value: "bak_spec" } }, [
-            _vm._v("Бакалавриат/специалитет")
-          ]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "mag" } }, [_vm._v("Магистратура")])
-        ])
+    return _c("span", [_c("span")])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "animation_cust" }, [
+      _c("div", { staticClass: "sk-chasing-dots" }, [
+        _c("div", { staticClass: "sk-child sk-dot-1" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "sk-child sk-dot-2" })
       ])
     ])
   },
@@ -37731,38 +38138,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-check" }, [
-      _c("input", {
-        staticClass: "agree-term",
-        attrs: { type: "checkbox", name: "agree-term", id: "agree-term" }
-      }),
-      _vm._v(" "),
-      _c(
-        "label",
-        { staticClass: "label-agree-term", attrs: { for: "agree-term" } },
-        [
-          _c("span", [_c("span")]),
-          _vm._v("Я принимаю условия "),
-          _c("a", { staticClass: "term-service", attrs: { href: "#" } }, [
-            _vm._v("Пользовательского соглашения")
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-submit" }, [
-      _c("input", {
-        staticClass: "submit",
-        attrs: {
-          type: "submit",
-          name: "submit",
-          id: "submit",
-          value: "Рассчитать"
-        }
+    return _c("span", [
+      _c("i", {
+        staticClass: "fa fa-hourglass-half",
+        attrs: { "aria-hidden": "true" }
       })
     ])
   },
@@ -37770,27 +38149,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "diplom_box result_bits" }, [
-      _c("div", { staticClass: "result_bits_inner" }, [
-        _c("span", [_vm._v("Средний балл ")]),
+    return _c("thead", [
+      _c("tr", { staticClass: "table100-head" }, [
+        _c("th", { staticClass: "column1" }, [_vm._v("Название")]),
         _vm._v(" "),
-        _c("span", [_vm._v("зачётки: ")]),
+        _c("th", { staticClass: "column2" }, [_vm._v("Тип")]),
         _vm._v(" "),
-        _c("span", [_vm._v("4,78")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "diplom_box result_bits" }, [
-      _c("div", { staticClass: "result_bits_inner" }, [
-        _c("span", [_vm._v("Средний балл ")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("диплома: ")]),
-        _vm._v(" "),
-        _c("span", [_vm._v("4,76")])
+        _c("th", { staticClass: "column3" }, [_vm._v("Оценка")])
       ])
     ])
   }
@@ -50098,15 +50463,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!*********************************************************!*\
   !*** ./resources/js/components/CalcMedianComponent.vue ***!
   \*********************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CalcMedianComponent_vue_vue_type_template_id_042192e3___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CalcMedianComponent.vue?vue&type=template&id=042192e3& */ "./resources/js/components/CalcMedianComponent.vue?vue&type=template&id=042192e3&");
 /* harmony import */ var _CalcMedianComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CalcMedianComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/CalcMedianComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CalcMedianComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CalcMedianComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50136,7 +50500,7 @@ component.options.__file = "resources/js/components/CalcMedianComponent.vue"
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/CalcMedianComponent.vue?vue&type=script&lang=js& ***!
   \**********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50244,15 +50608,27 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/rules.scss":
+/*!***********************************!*\
+  !*** ./resources/sass/rules.scss ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
-/*!*****************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/mystyle.scss ***!
-  \*****************************************************************/
+/*!*********************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/mystyle.scss ./resources/sass/rules.scss ***!
+  \*********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! D:\PHP\Vagrant\Projects\median.grades.ru\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\PHP\Vagrant\Projects\median.grades.ru\resources\sass\mystyle.scss */"./resources/sass/mystyle.scss");
+__webpack_require__(/*! D:\PHP\Vagrant\Projects\median.grades.ru\resources\sass\mystyle.scss */"./resources/sass/mystyle.scss");
+module.exports = __webpack_require__(/*! D:\PHP\Vagrant\Projects\median.grades.ru\resources\sass\rules.scss */"./resources/sass/rules.scss");
 
 
 /***/ })
