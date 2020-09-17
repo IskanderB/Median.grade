@@ -26,7 +26,7 @@
             <div class="form-submit">
                 <div name="submit" id="submit" class="submit" @click="getStudent">Рассчитать</div>
             </div>
-            <div class="animation_cust">
+            <div class="animation_cust" v-bind:style="{display: animView}">
                 <div class='sk-chasing-dots'>
                   <div class='sk-child sk-dot-1'></div>
                   <div class='sk-child sk-dot-2'></div>
@@ -139,12 +139,16 @@
                     this.resPaddingTop = "0px";
                 }
             },
+
             getStudent() {
-                this.animView = "block";
+                // await this.changeAnim("block");
+                this.erroeView = "none";
+                this.openResult = "none";
                 if (!this.check_rules) {
                     this.errorColor = "red";
                     return false;
                 }
+                this.animView = "block";
                 this.errorColor = "";
 
                 axios({
@@ -171,6 +175,7 @@
                     this.medianDip = response.data.dip;
                     this.subjectsList = response.data.total;
                     this.animView = "none";
+                    // await this.changeAnim("none");
                 })
                 .catch((error) => {
                     this.openResult = "none";

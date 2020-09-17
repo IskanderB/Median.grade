@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Parser;
 use App\Models\Dom;
+use App\Models\Student;
+use App\Models\Subject;
 
 class ParserController extends Controller
 {
     use \App\Traits\PeculiarValidator;
     
     private $url = 'https://www.nntu.ru/frontend/web/student_info.php';
+    private $zach;
+    private $dip;
+    private $total;
     
     public function calcMedian(Request $request) {
         $rules = [
@@ -25,16 +30,9 @@ class ParserController extends Controller
             return $validator;
         }
         
-        $parser = new Parser(
-                $this->url,
-                $request->all(),
-            );
-        $srt = $parser->parse();
+        $str = $this->getParser($request->all());
         
-        $str = $str ?? "﻿Студент не найден.";
-        
-
-        if ($srt == "﻿Студент не найден.") {
+        if ($str == "﻿Студент не найден.") {
             return response()->json([
                 'data' => [
                     'notFound' => [$str],
@@ -42,8 +40,7 @@ class ParserController extends Controller
             ], 404);
         }
         
-        $dom = new Dom($srt);
-        $check = $dom->buildDistinctList();
+        $check = $this->calcInDom($str);
         
         if (!$check) {
             return response()->json([
@@ -53,14 +50,61 @@ class ParserController extends Controller
             ], 404);
         }
         
-        $zach = $dom->getMedianFull();
-        $dip = $dom->getMedianDistinct();
-        $total = $dom->getTotal();
-        
+           
+        try {
+        $id = $this->createStudent($request->all());
+        $this->createSubjects($id);
+        }catch (\Exception $e) {}
+
         return response()->json([
-            'zach' => $zach,
-            'dip' => $dip,
-            'total' => $total,
+            'zach' => $this->zach,
+            'dip' => $this->dip,
+            'total' => $this->total,
         ], 200);
+    }
+    
+    private function calcInDom($str) {
+        $dom = new Dom($str);
+        $check = $dom->buildDistinctList();
+        
+        if ($check) {
+            $this->zach = $dom->getMedianFull();
+            $this->dip = $dom->getMedianDistinct();
+            $this->total = $dom->getTotal();
+        }
+        return $check;
+    }
+    
+    private function createSubjects($id) {
+        if($id) {
+            $subject = new Subject();
+            $subject->createMulti($id, $this->total);
+        }
+    }
+    
+    private function createStudent($data) {
+        $student = new Student();
+        $check = $student->check($data['n_zach']);
+        $data['zach'] = $this->zach;
+        $data['dip'] = $this->dip;
+        $id = $student->create($data);
+        if($check) {
+            return false;
+        }
+        return $id;
+         
+        
+    }
+    
+    private function getParser($data) {
+        $parser = new Parser(
+                $this->url,
+                $data,
+            );
+        $str = $parser->parse();
+        
+        $str = $str ?? "﻿Студент не найден.";
+
+        return $str;
     }
 }

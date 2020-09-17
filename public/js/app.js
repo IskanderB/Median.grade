@@ -2051,13 +2051,16 @@ __webpack_require__.r(__webpack_exports__);
     getStudent: function getStudent() {
       var _this = this;
 
-      this.animView = "block";
+      // await this.changeAnim("block");
+      this.erroeView = "none";
+      this.openResult = "none";
 
       if (!this.check_rules) {
         this.errorColor = "red";
         return false;
       }
 
+      this.animView = "block";
       this.errorColor = "";
       axios({
         method: 'post',
@@ -2082,7 +2085,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.medianZach = response.data.zach;
         _this.medianDip = response.data.dip;
         _this.subjectsList = response.data.total;
-        _this.animView = "none";
+        _this.animView = "none"; // await this.changeAnim("none");
       })["catch"](function (error) {
         _this.openResult = "none";
         _this.animView = "none";
@@ -37984,7 +37987,11 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _c(
+          "div",
+          { staticClass: "animation_cust", style: { display: _vm.animView } },
+          [_vm._m(1)]
+        )
       ]
     ),
     _vm._v(" "),
@@ -38126,12 +38133,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "animation_cust" }, [
-      _c("div", { staticClass: "sk-chasing-dots" }, [
-        _c("div", { staticClass: "sk-child sk-dot-1" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "sk-child sk-dot-2" })
-      ])
+    return _c("div", { staticClass: "sk-chasing-dots" }, [
+      _c("div", { staticClass: "sk-child sk-dot-1" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "sk-child sk-dot-2" })
     ])
   },
   function() {
