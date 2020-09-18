@@ -2062,9 +2062,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.animView = "block";
       this.errorColor = "";
+      var host = location.hostname;
       axios({
         method: 'post',
-        url: 'http://median.grades.ru/api/v1/student',
+        url: 'https://' + host + '/api/v1/student',
         params: {
           'first_name': this.first_name,
           'last_name': this.last_name,

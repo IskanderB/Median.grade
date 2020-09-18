@@ -1,9 +1,9 @@
 @setup
-  $user = "admin";
+  $user = "axurt";
 
   $timezone = "Europe/Moscow";
 
-  $path = "/home/admin/web/median.tutorib.ru/public_html";
+  $path = "/var/www/median.tutorib.ru";
 
   $current = $path . "/current";
 
@@ -19,7 +19,7 @@
   $release = $path . '/releases/' . $date->format('YmdTis');
 @endsetup
 
-@servers(['production' => $user . "@45.84.227.191"])
+@servers(['production' => $user . "@45.67.58.67"])
 
 @task('clone', ['on' => $on])
   mkdir -p {{ $release }}
@@ -29,7 +29,6 @@
 
 
 @task('composer', ['on' => $on])
-  composer self-update
   cd {{$release}}
   composer install --no-interaction --no-dev --prefer-dist
   echo "#2 - Composer dependencies have been installed"
@@ -43,7 +42,7 @@
 
   php artisan config:clear
 
-  php artisan migrate
+
   php artisan clear-compiled --env=production;
 
   echo "#3 - Production dependencies have been installed"
