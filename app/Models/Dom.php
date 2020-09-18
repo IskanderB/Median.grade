@@ -54,7 +54,7 @@ class Dom extends Model
             $duplications = [];
             for ($i=0;$i<count($this->full);$i++) {
                 if ($this->full[$j]['name'] == $this->full[$i]['name'] and $this->full[$j]['type'] == $this->full[$i]['type']) {
-                    $duplications[] = $this->full[$j]['grade'];
+                    $duplications[] = $this->full[$i]['grade'];
                 }
             }
             
@@ -67,7 +67,7 @@ class Dom extends Model
                     'all' => trim(implode(' | ', $duplications)), 
                     'end' => $grade_end
                     ],
-            ];
+            ];           
         }
         return true;
     }
