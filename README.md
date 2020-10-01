@@ -7,14 +7,17 @@ diploma, current median grades and get everything grades have been marked.
 
 ### How does that work?
 
-You enter your personal data like:
+#### You enter your personal data like:
     - Last name
     - First name
     - Patronymic
     - Student ticket number
     - Type of leaning
-You get median grade of everything your grades, median grade only of diploma grades and
-else you be able to see everything your grades
+
+#### You get:
+    - median grade of everything your grades
+    - median grade only of diploma grade
+    - else you be able to see everything your grades
 
 ### What are technologies I used in this project?
 
