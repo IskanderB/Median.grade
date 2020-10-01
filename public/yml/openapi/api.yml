@@ -1,0 +1,138 @@
+openapi: 3.0.1
+
+info:
+    version: 1.0.0
+    title: 'API documentation for pay.api'
+servers:
+  - url: http://median.grades.ru/
+paths:
+    /api/v1/student:
+        post:
+            summary: "Get students grades (everything and median)"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                last_name:
+                                    type: string
+                                    example: "Example LastName"
+                                    required: true
+                                    maxLength: 255
+                                first_name:
+                                    type: string
+                                    example: "Example FirstName"
+                                    required: true
+                                    maxLength: 255
+                                otc:
+                                    type: string
+                                    example: "Example FirstName"
+                                    required: true
+                                    maxLength: 255
+                                n_zach:
+                                    type: integer
+                                    example: 100000
+                                    required: true
+                                learn_type:
+                                    type: string
+                                    example: "bak_spec"
+                                    enum:
+                                        - bak_spec
+                                        - mag
+                                    required: true
+                                    maxLength: 255
+            responses:
+                201:
+                    content:
+                       application/json:
+                           schema:
+                                properties:
+                                    zach:
+                                        type: numeric
+                                        example: 4.75
+                                    dip:
+                                        type: numeric
+                                        example: 4.75
+                                    total:
+                                        type: object
+                                        properties:
+                                            property_1:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: "Математический анализ"
+                                                    type:
+                                                        type: string
+                                                        example: "экзамен"
+                                                    grade:
+                                                        type: object
+                                                        properties:
+                                                            all:
+                                                                type: string
+                                                                example: "5 | 4 | 5"
+                                                            end:
+                                                                type: integer
+                                                                example: 5
+                                            property_2:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: "Физика"
+                                                    type:
+                                                        type: string
+                                                        example: "экзамен"
+                                                    grade:
+                                                        type: object
+                                                        properties:
+                                                            all:
+                                                                type: string
+                                                                example: "5 | 4 | 5"
+                                                            end:
+                                                                type: integer
+                                                                example: 5
+                422:
+                    content:
+                       application/json:
+                           schema:
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            last_name:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    example: "The last_name field is required."
+                                            first_name:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    example: "The first_name field is required."
+                                            otc:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    example: "The otc field is required."
+                                            n_zach:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    example: "The n_zach field is required."
+                                            learn_type:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    example: "The learn_type field is required."
+                404:
+                    content:
+                       application/json:
+                           schema:
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            notFound:
+                                                type: string
+                                                example: "Студент не найден."

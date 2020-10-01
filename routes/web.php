@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\RulesController;
+use App\Http\Controllers\DocController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,9 @@ use App\Http\Controllers\RulesController;
 //});
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
+
+Route::get('/documentation', [DocController::class, 'index'])->name('index');
+
 
 Auth::routes();
 

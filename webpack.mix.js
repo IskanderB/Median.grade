@@ -12,5 +12,6 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/bundles/redoc.standalone.js', 'public/js/redoc.standalone.js')
     .sass('resources/sass/mystyle.scss', 'public/css/mystyle.css')
     .sass('resources/sass/rules.scss', 'public/css/rules.css');

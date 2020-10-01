@@ -3,9 +3,9 @@
 namespace App\Traits;
 
 trait PeculiarValidator {
-    
+
     /**
-     * 
+     *
      * @param array $data
      * @param array $rules
      * @return boolean|\Illuminate\Http\JsonResponse
@@ -15,10 +15,8 @@ trait PeculiarValidator {
         if ($validator->fails()) {
             return response()->json([
                 'data' => $validator->errors(),
-            ], 400);
+            ], 422);
         }
         return false;
     }
 }
-
-
