@@ -21,7 +21,7 @@ diploma, current median grades and get everything grades have been marked.
 
 ### What are technologies I used in this project?
 
-List of technologies:
+#### List of technologies:
     - PHP 7.4
     - MYSQL 8.0
     - Laravel 8.1.0
